@@ -1,17 +1,23 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, onMounted } from 'vue';
+import ListProduct from "./components/ListProduct.vue";
+import Header from "./components/Header.vue";
+import Loader from "./components/Loader.vue";
+const loading = ref(true);
+
+// Устанавливаем таймер, чтобы имитировать загрузку так как плохо работает апи то грузит то не грузит
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+
+  <Loader v-if="loading"></Loader>
+  <Header v-if="!loading" ></Header>
+  <ListProduct v-if="!loading" ></ListProduct>
 </template>
 
 <style scoped>
