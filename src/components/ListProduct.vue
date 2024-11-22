@@ -1,6 +1,6 @@
 <template>
   <div class="product-grid">
-
+    <div v-if="products.length === 0">Ничего не найдено</div>
     <CardProduct v-for="product in products" :product="product"></CardProduct>
   </div>
 
@@ -11,10 +11,18 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import CardProduct from "./CardProduct.vue";
-import productsData from './product.json';
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  products: {
+    type: Array,
+    required: true
+  }
+});
+
 
 // Создаем реактивную переменную для хранения продуктов
-const products = ref(productsData);
+
 
 // Функция для получения продуктов из API работает не стабильно по этому скачал просто json
 // const fetchProducts = async () => {

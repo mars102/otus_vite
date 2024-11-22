@@ -1,9 +1,6 @@
 <template>
   <header class="bg-orange-600 text-white p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="text-lg font-bold">
-        <router-link to="/" class="hover:text-blue-300">Мой Сайт</router-link>
-      </div>
       <nav>
         <ul class="flex space-x-4">
           <li>
@@ -20,14 +17,16 @@
           </li>
         </ul>
       </nav>
+      <div class="text-lg font-bold">
+        <slot></slot>
+      </div>
+
     </div>
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header'
-}
+<script setup>
+
 </script>
 
 <style scoped>
