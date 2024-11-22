@@ -28,6 +28,7 @@ const filteredItems = computed(() => {
 
 const fetchProducts = async () => {
   try {
+    console.log("ghbdtn vbh")
     const response = await axios.get('https://fakestoreapi.com/products');
     products.value = response.data;
   } catch (error) {
@@ -35,6 +36,9 @@ const fetchProducts = async () => {
   }
 };
 
+onMounted(() => {
+   fetchProducts();
+});
 const onSearch = (term) => {
   searchTerm.value = term;
 };
@@ -45,6 +49,7 @@ const searchTerm = ref('');
 
   <Loader v-if="loading"></Loader>
   <Header v-if="!loading">
+
     <SearchComponent  v-model="searchTerm" @search="onSearch"></SearchComponent>
   </Header>
   <ListProduct v-if="!loading" :products="filteredItems" ></ListProduct>
