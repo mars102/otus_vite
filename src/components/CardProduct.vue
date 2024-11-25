@@ -10,7 +10,7 @@
         <span class="text-gray-600 ml-2">({{ product.rating.count }} reviews)</span>
       </div>
     </div>
-    <button @click="addToCart" class="mt-4 mb-4 mx-2 bg-orange-500 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 transition duration-200">
+    <button @click="addToCart(product)" class="mt-4 mb-4 mx-2 bg-orange-500 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 transition duration-200">
       В корзину
     </button>
   </div>
@@ -19,16 +19,22 @@
 <script setup>
 
 
+import {defineEmits} from "vue";
+
 const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 });
+const emit = defineEmits(['addCard']);
+const onInput = () => {
 
-// Функция добавления товара в корзину (например)
-const addToCart = () => {
-  console.log(`${props.product.title} добавлен в корзину`);
+};
+
+// Функция добавления товара в корзину
+const addToCart = (item) => {
+  emit('addCard', item);
 };
 </script>
 

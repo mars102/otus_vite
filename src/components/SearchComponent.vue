@@ -1,5 +1,5 @@
 <template>
-  <div style="color: black;">
+  <div style="color: black; padding-top: 7px;">
 
     <input
         type="text"

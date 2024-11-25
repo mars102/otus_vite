@@ -3,18 +3,18 @@ import {ref, onMounted, computed} from 'vue';
 import ListProduct from "./components/ListProduct.vue";
 import Header from "./components/Header.vue";
 import Loader from "./components/Loader.vue";
-
+import ShoppingCart from "./components/ShoppingCart.vue";
 import SearchComponent from "./components/SearchComponent.vue";
-const loading = ref(true);
-import productsData from './components/product.json';
+const loading = ref(false);
+
 import axios from "axios";
+
+import PageOrder from "./components/PageOrder.vue";
+
 const products = ref([]);
-// Устанавливаем таймер, чтобы имитировать загрузку так как плохо работает апи то грузит то не грузит
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
+const basket  = ref([]);
+const isOrder = ref(false)
+
 
 
 const filteredItems = computed(() => {
@@ -29,15 +29,38 @@ const filteredItems = computed(() => {
 const fetchProducts = async () => {
   try {
     console.log("ghbdtn vbh")
+    loading.value = true;
     const response = await axios.get('https://fakestoreapi.com/products');
     products.value = response.data;
+
+    loading.value = false;
+
   } catch (error) {
     console.error('Error fetching products:', error);
+    loading.value = false;
   }
 };
 
+
+const addBasket = (tovar) => { // принимаем данные о добавлении в корзину
+  basket.value.push(tovar);
+};
+
+const closeOrder = () => {
+  isOrder.value = false
+};
+
+
+const openFormOrder = () => {
+  isOrder.value = true
+};
+
+
+
 onMounted(() => {
-   fetchProducts();
+
+  fetchProducts();
+
 });
 const onSearch = (term) => {
   searchTerm.value = term;
@@ -48,11 +71,15 @@ const searchTerm = ref('');
 <template>
 
   <Loader v-if="loading"></Loader>
-  <Header v-if="!loading">
+  <div v-if="!loading">
+    <Header >
 
-    <SearchComponent  v-model="searchTerm" @search="onSearch"></SearchComponent>
-  </Header>
-  <ListProduct v-if="!loading" :products="filteredItems" ></ListProduct>
+      <SearchComponent  v-model="searchTerm" @search="onSearch"></SearchComponent>
+      <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
+    </Header>
+    <ListProduct @addBasket="addBasket" v-if="!isOrder" :products="filteredItems" ></ListProduct>
+    <PageOrder :tovar="basket" v-if="isOrder" @closeOrder = "closeOrder"></PageOrder>
+  </div>
 </template>
 
 <style scoped>

@@ -1,24 +1,28 @@
 <template>
   <div class="product-grid">
     <div v-if="products.length === 0">Ничего не найдено</div>
-    <CardProduct v-for="product in products" :product="product"></CardProduct>
+    <CardProduct @addCard="addCard" v-for="product in products" :product="product"></CardProduct>
   </div>
-
-
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, defineEmits} from 'vue';
 import axios from 'axios';
 import CardProduct from "./CardProduct.vue";
 import { defineProps } from 'vue';
-
+const emit = defineEmits(['addBasket']);
 const props = defineProps({
   products: {
     type: Array,
     required: true
   }
 });
+
+
+const addCard = (tovar) => {
+  emit('addBasket', tovar);
+
+};
 
 
 // Создаем реактивную переменную для хранения продуктов

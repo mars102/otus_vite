@@ -4,20 +4,20 @@
       <nav>
         <ul class="flex space-x-4">
           <li>
-            <router-link to="/" class="hover:text-blue-300">Главная</router-link>
+            <a  class="hover:text-blue-300">Главная</a>
           </li>
           <li>
-            <router-link to="/about" class="hover:text-blue-300">О нас</router-link>
+            <a  class="hover:text-blue-300">О нас</a>
           </li>
           <li>
-            <router-link to="/services" class="hover:text-blue-300">Услуги</router-link>
+            <a  class="hover:text-blue-300">Услуги</a>
           </li>
           <li>
-            <router-link to="/contact" class="hover:text-blue-300">Контакты</router-link>
+            <a  class="hover:text-blue-300">Контакты</a>
           </li>
         </ul>
       </nav>
-      <div class="text-lg font-bold">
+      <div class="text-lg font-bold flex space-x-4">
         <slot></slot>
       </div>
 
