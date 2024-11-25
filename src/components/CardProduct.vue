@@ -2,7 +2,8 @@
   <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
     <img :src="product.image" alt="Product Image" class="rounded-t-lg w-full h-48 object-cover" />
     <div class="p-4 flex flex-col flex-grow">
-      <h2 class="text-lg font-semibold text-gray-800">{{ product.title }}</h2>
+      <h2 class="text-lg font-semibold text-gray-800" style="cursor: pointer;" @click="goToProduct(product.id)">{{ product.title }}</h2>
+
       <p class="text-gray-600 my-2 flex-grow">{{ product.description }}</p>
       <p class="font-bold text-xl text-gray-900">Цена: {{ product.price.toFixed(2) }} Руб</p>
       <div class="flex items-center mt-2">
@@ -20,6 +21,7 @@
 
 
 import {defineEmits} from "vue";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   product: {
@@ -36,6 +38,11 @@ const onInput = () => {
 const addToCart = (item) => {
   emit('addCard', item);
 };
+const router =useRouter();
+const goToProduct = (id) => {
+
+  router.push({name:'product', params:{id:id}})
+}
 </script>
 
 <style scoped>

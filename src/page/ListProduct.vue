@@ -8,7 +8,7 @@
 <script setup>
 import {ref, onMounted, defineEmits} from 'vue';
 import axios from 'axios';
-import CardProduct from "./CardProduct.vue";
+import CardProduct from "../components/CardProduct.vue";
 import { defineProps } from 'vue';
 const emit = defineEmits(['addBasket']);
 const props = defineProps({

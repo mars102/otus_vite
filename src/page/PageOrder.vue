@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-top justify-center p-10">
-
     <div class="bg-white shadow rounded-lg p-5">
       <div class="flex justify-between items-center">
         <h1 class="text-xl font-bold">Оформление заказа</h1>
@@ -13,9 +12,7 @@
       <div v-if="props.tovar.length">
         <div class="container">
           <div :class="level==1||level==2||level==3?'circle blue':'circle gray' ">1</div>
-
           <div :class="level==1||level==2||level==3?'line line-blue':'line line-gray' " class=""></div>
-
           <div :class="level==2||level==3?'circle blue':'circle gray'">2</div>
           <div :class="level==2||level==3?'line line-blue':'line line-gray' "></div>
           <div :class="level==3?'circle blue':'circle gray' ">3</div>
@@ -57,17 +54,19 @@
 </template>
 
 <script setup>
-import SendOrder from "./SendOrder.vue";
-import Loader from "./Loader.vue";
+import SendOrder from "../components/SendOrder.vue";
+import Loader from "../components/Loader.vue";
 
 const level = ref(1) // 1, 2, 3
-const emit = defineEmits(['closeOrder']);
+
 import {defineEmits, defineProps, ref} from "vue";
-import FormOrder from "./FormOrder.vue";
+import FormOrder from "../components/FormOrder.vue";
 import axios from "axios";
+import {useRouter} from "vue-router";
+const router =useRouter();
 const props = defineProps(["tovar"]);
 const closeOrder = () => {
-  emit('closeOrder');
+  router.push("/")
 };
 
 const load = ref(false)
@@ -82,7 +81,7 @@ const sendOrder = async (data) => {
   if (response.status == 200) {
     level.value = 3
     setTimeout(() => {
-      location.reload();
+      router.push("/")
     }, 5000); // 5000 миллисекунд = 5 секунд
 
   }

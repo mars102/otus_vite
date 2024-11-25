@@ -4,28 +4,48 @@
       <nav>
         <ul class="flex space-x-4">
           <li>
-            <a  class="hover:text-blue-300">Главная</a>
+            <router-link to="/">Главная</router-link>
           </li>
-          <li>
-            <a  class="hover:text-blue-300">О нас</a>
-          </li>
-          <li>
-            <a  class="hover:text-blue-300">Услуги</a>
-          </li>
-          <li>
-            <a  class="hover:text-blue-300">Контакты</a>
-          </li>
+
         </ul>
       </nav>
       <div class="text-lg font-bold flex space-x-4">
         <slot></slot>
       </div>
+      <ul class="flex space-x-4">
+        <li v-if="storedData==0" >
+          <router-link to="/login">Войти</router-link>
+        </li>
+        <li v-if="storedData==1" @click="Oute">
+          <span>Выйти</span>
+        </li>
+        <li >
+          <span>{{storedData}}</span>
+        </li>
+
+
+
+      </ul>
 
     </div>
   </header>
 </template>
 
 <script setup>
+import {computed, onMounted} from "vue";
+import {useRouter} from "vue-router";
+
+const storedData = computed(() => {
+  return localStorage.getItem('isAuth')==0?Number(0):Number(1)
+});
+const router =useRouter();
+const Oute = () => {
+  localStorage.setItem('isAuth', 0);
+  window.location.reload();
+};
+
+
+
 
 </script>
 
