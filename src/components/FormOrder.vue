@@ -50,11 +50,10 @@
           <input
               type="checkbox"
               v-model="consent"
-              @blur="validateField('consent')"
-              @input="validateField('consent')"
+              @change="validateField('consent')"
               :class="{'border-red-500': errors.consent}"
           />
-          <span class="ml-2 text-sm">Согласен на обработку конфиденциальных данных</span>
+          <span class="ml-2 text-sm">Согласен на обработку конфиденциальных данных </span>
         </label>
         <span v-if="errors.consent" class="text-red-500 text-sm">{{ errors.consent }}</span>
       </div>
