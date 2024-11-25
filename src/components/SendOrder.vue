@@ -11,6 +11,7 @@
       <h2 class="text-2xl font-semibold text-center text-gray-800">Заказ успешно отправлен!</h2>
       <p class="mt-2 text-gray-600 text-center">Мы получили ваш заказ и приступаем к его обработке.</p>
       <p class="mt-4 text-gray-500 text-center">Ожидайте подтверждение на вашу почту.</p>
+      <p class="mt-4 text-gray-500 text-center">Через 5 секунд вы пудете перекинуты на главную страницу.</p>
       <div class="mt-6">
         <a href="/" class="block w-full text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md py-2">Вернуться на главную</a>
       </div>

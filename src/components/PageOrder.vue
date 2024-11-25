@@ -81,6 +81,10 @@ const sendOrder = async (data) => {
   const response = await axios.post('https://httpbin.org/post', order);
   if (response.status == 200) {
     level.value = 3
+    setTimeout(() => {
+      location.reload();
+    }, 5000); // 5000 миллисекунд = 5 секунд
+
   }
   load.value= false
 
