@@ -22,16 +22,26 @@
         <br>
         <Loader v-if="load"></Loader>
         <div v-if="level==1" style="min-width: 600px">
-          <b>Список товаров:</b>
-          <p v-for="product in props.tovar" class="mt-3 text-gray-700 " style="display: flex; justify-content: space-between;">
-            <span >{{product.title}}</span> <b style="padding-left: 30px;">{{product.price}} руб </b>
-          </p>
+          <div class="mt-3 text-gray-700 " style="display: flex; justify-content: space-between;">
+            <b>Список товаров:</b>
+            <button @click="deleteAllProduct" style="padding-left: 20px;"><i class="fas fa-trash icon"></i></button>
+          </div>
+          <div v-for="(product, index) in props.tovar" :key="index"  class="mt-3 text-gray-700 " style="display: flex; justify-content: space-between;">
+          <div>
+            <span >{{product.title}}</span>
+          </div>
+          <div>
+            <b style="padding-left: 30px;">{{product.price}} руб </b>
+            <button @click="deleteProduct(index)" style="padding-left: 20px;"><i class="fas fa-trash icon"></i></button>
+
+          </div>
+          </div>
           <br>
           <hr>
           <br>
           <div style="display: flex; justify-content: space-between;">
             <div style="padding-right: 20px;">
-              <b style="font-size: 25px;"> Итого: {{ props.tovar.reduce((sum, product) => sum + product.price, 0).toFixed(2)}}  руб</b>
+              <b style="font-size: 25px;"> <span style="padding-left: 10px; padding-right: 30px;">Итого:</span> {{ props.tovar.reduce((sum, product) => sum + product.price, 0).toFixed(2)}}  руб</b>
             </div>
             <div>
               <button @click="next" class="flex items-center px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -42,7 +52,7 @@
         </div>
         <div v-if="level==2" style="min-width: 600px">
 
-          <FormOrder @sendOrder="sendOrder"></FormOrder>
+          <FormOrder @sendOrder="sendOrder" @back="back"></FormOrder>
         </div>
         <div v-if="level==3" style="min-width: 600px">
           <SendOrder></SendOrder>
@@ -90,11 +100,23 @@ const sendOrder = async (data) => {
 
 };
 
-
+const back = () => {
+  level.value = level.value-1
+};
 const next = () => {
-
   level.value = level.value+1
 };
+const emit = defineEmits(['delBascket']);
+const deleteProduct = (index) => {
+  let param = {index:index,how:1 }
+  emit('delBascket', param);
+}
+
+const deleteAllProduct = (index) => {
+  let param = {index:0,how:props.tovar.length}
+  emit('delBascket', param);
+}
+
 
 </script>
 

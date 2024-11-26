@@ -40,9 +40,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import {ref, reactive, defineEmits} from 'vue';
 import {useRouter} from "vue-router";
 
+const emit = defineEmits(['login']);
 const username = ref('');
 const password = ref('');
 const errors = reactive({
@@ -58,16 +59,24 @@ function validateForm() {
 const router =useRouter();
 
 function submitForm() {
+  console.log("z nenn")
   isSubmitted = true;
   validateForm();
   if (!errors.username && !errors.password) {
     if(username.value == 'admin'&&password.value == 'admin'){
+      emit('login', 1);
       localStorage.setItem('isAuth', 1);
       router.push({name:"home"});
+    } else {
+      username.value="";
+      password.value="";
+      alert("Не верные логин или пароль! ")
 
     }
   } else {
+    console.log("z nenn")
     localStorage.setItem('isAuth', 0);
+
   }
 }
 

@@ -56,21 +56,27 @@ const openFormOrder = () => {
 };
 
 
-
+const storedData = ref(0)
 onMounted(() => {
-
   fetchProducts();
-
+  storedData.value =   Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
 });
-const storedData = computed(() => {
-  console.log("sdflksdl;kfl;sdkf")
-  console.log(Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth')))
 
- return Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
-});
 const onSearch = (term) => {
   searchTerm.value = term;
 };
+
+const delBascket = (index) => {
+  basket.value.splice(index.index,index.how)
+};
+
+
+const onLogin = (login) => {
+  console.log("login")
+  console.log(login)
+  storedData.value = login;
+};
+
 const searchTerm = ref('');
 
 
@@ -85,7 +91,7 @@ const searchTerm = ref('');
       <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
     </Header>
     <div class="router-container ">
-      <router-view  @addBasket="addBasket"  :products="filteredItems" :tovar="basket" ></router-view>
+      <router-view @login="onLogin"  @addBasket="addBasket" @delBascket="delBascket" :products="filteredItems" :tovar="basket" ></router-view>
     </div>
 <!--    <ListProduct @addBasket="addBasket" v-if="!isOrder" :products="filteredItems" ></ListProduct>-->
 <!--    <PageOrder :tovar="basket" v-if="isOrder" @closeOrder = "closeOrder"></PageOrder>-->

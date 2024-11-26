@@ -57,13 +57,21 @@
         </label>
         <span v-if="errors.consent" class="text-red-500 text-sm">{{ errors.consent }}</span>
       </div>
+      <button
+          @click="bakcAdd"
+          class="mt-4 bg-blue-500  text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+      >
+        < Назад
+      </button>
 
       <button
           type="submit"
-          class="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+          class="mt-4 bg-blue-500 mx-4 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
       >
         Отправить
       </button>
+
+
     </form>
   </div>
 </template>
@@ -77,7 +85,7 @@ const email = ref('');
 const phone = ref('');
 const consent = ref(false);
 const errors = ref({});
-const emit = defineEmits(['sendOrder']);
+const emit = defineEmits(['sendOrder','back']);
 
 const validateField = (field) => {
   switch (field) {
@@ -97,6 +105,10 @@ const validateField = (field) => {
       break;
   }
 };
+
+const  bakcAdd = async () => {
+  emit('back');
+}
 
 const  onSubmit = async () => {
   for (const field of ['name', 'email', 'phone', 'consent']) {

@@ -12,21 +12,14 @@
       <div class="text-lg font-bold flex space-x-4">
         <slot></slot>
       </div>
-      <ul class="flex space-x-4">
+      <ul class="flex space-x-4" style="cursor:pointer;">
         <li v-if="storedData==0" >
           <router-link to="/login">Войти</router-link>
         </li>
         <li v-if="storedData==1" @click="Oute">
           <span>Выйти</span>
         </li>
-        <li >
-          <span>{{storedData}}</span>
-        </li>
-
-
-
       </ul>
-
     </div>
   </header>
 </template>

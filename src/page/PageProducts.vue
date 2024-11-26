@@ -26,8 +26,8 @@
 
       <p class="text-gray-700 text-base">{{ product.description }}</p>
       <h2 class="text-lg font-semibold mt-4">Цена: {{ product.price }}</h2>
-      <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Купить
+      <button @click="addCard(product)" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Добавить в корзину
       </button>
     </div>
   </div>
@@ -37,7 +37,7 @@
 <script setup>
   import axios from "axios";
   import {useRoute} from "vue-router";
-  import {onMounted, ref} from "vue";
+  import {defineEmits, onMounted, ref} from "vue";
   const route = useRoute();
   const loading = ref(false);
   const product = ref(null)
@@ -53,11 +53,19 @@
       loading.value = false;
     }
   };
+  const emit = defineEmits(['addBasket']);
   onMounted(() => {
 
     fetchProduct();
 
   });
+  const addCard = (tovar) => {
+    console.log("bascet")
+    console.log(tovar)
+    emit('addBasket', tovar);
+
+  };
+
 </script>
 
 <style scoped>
