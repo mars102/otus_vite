@@ -70,7 +70,7 @@ function submitForm() {
     } else {
       username.value="";
       password.value="";
-      alert("Не верные логин или пароль! ")
+      alert("Не верные логин или пароль! Правильные логин пароль admin/admin")
 
     }
   } else {
