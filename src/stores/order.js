@@ -1,11 +1,9 @@
 import { defineStore } from "pinia";
-import {computed, reactive, ref} from "vue";
+import {ref} from "vue";
 
 export const useOrderStore = defineStore('order', () => {
 
     const basket = ref([]) // { id: count }
-
-
 
     function addBasket(item){
         basket.value.push(item)

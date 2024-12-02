@@ -4,23 +4,13 @@ import axios from "axios";
 
 export const useProductStore = defineStore('product', () => {
 
-    const products = ref([]); // { id: count }
+    const products = ref([]); // список всех продуктов
+    const product = ref(null) // данные по открытому продукту
+
     const loading = ref(false);
-    const searchTerm = ref("")
+    const searchTerm = ref("");
 
 
-
-    // function addBasket(item){
-    //     basket.value.push(item)
-    // }
-    //
-    // function removeBascket(index) {
-    //     basket.value.splice(index.index,index.how)
-    // }
-    // const inCart = computed(() => (itemId) => {
-    //     const countInCart = cart[itemId]
-    //     return countInCart ?? 0
-    // })
 
     function onSearch(term){
         searchTerm.value = term;
@@ -47,6 +37,19 @@ export const useProductStore = defineStore('product', () => {
             console.error('Error fetching products:', error);
             loading.value = false;
         }
-    }
-    return { products, fetchProducts, filteredItems, searchTerm, onSearch }
+    };
+
+    async function fetchProduct (id) {
+        try {
+            loading.value = true;
+            const response = await axios.get('https://fakestoreapi.com/products/'+id);
+
+            product.value = response.data;
+            loading.value = false;
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            loading.value = false;
+        }
+    };
+    return { products, product, fetchProducts, filteredItems, searchTerm, onSearch, fetchProduct }
 })

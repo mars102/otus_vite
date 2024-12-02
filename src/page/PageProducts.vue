@@ -35,35 +35,21 @@
 </template>
 
 <script setup>
-  import axios from "axios";
+
   import {useRoute} from "vue-router";
   import {defineEmits, onMounted, ref} from "vue";
+  import {useProductStore} from "../stores/product.js";
+  import {storeToRefs} from "pinia";
   const route = useRoute();
-  const loading = ref(false);
-  const product = ref(null)
-  const fetchProduct = async () => {
-    try {
-      loading.value = true;
-      const response = await axios.get('https://fakestoreapi.com/products/'+route.params.id);
-
-      product.value = response.data;
-      loading.value = false;
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      loading.value = false;
-    }
-  };
+  const productStore = useProductStore();
+  const { product } = storeToRefs(productStore);
   const emit = defineEmits(['addBasket']);
   onMounted(() => {
-
-    fetchProduct();
+    productStore.fetchProduct(route.params.id);
 
   });
   const addCard = (tovar) => {
-    console.log("bascet")
-    console.log(tovar)
     emit('addBasket', tovar);
-
   };
 
 </script>

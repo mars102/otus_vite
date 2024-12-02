@@ -10,39 +10,31 @@ import {useRouter} from "vue-router";
 import { useOrderStore } from "./stores/order.js";
 import {storeToRefs} from "pinia";
 import {useProductStore} from "./stores/product.js";
+import {useAuthStore} from "./stores/auth.js";
 
 const orderStore = useOrderStore();  // подключаем стор корзины
 const { basket  } = storeToRefs(orderStore)
 
 const productStore = useProductStore(); // подключаем стор со списком продуктов
-const { products, loading, searchTerm } = storeToRefs(productStore); // список продуктов и переменная обозначения закгрузки
+const { loading, searchTerm } = storeToRefs(productStore); // список продуктов и переменная обозначения закгрузки
 
+const authStore = useAuthStore(); // стор авторизации
+const { storedData } = storeToRefs(authStore); // переменная авторизации/ не авторизован
 
 const router = useRouter();
+
 const openFormOrder = () => {
    router.push("/basket")
 };
 
-
-const storedData = ref(0)
 onMounted(() => {
   productStore.fetchProducts();
-  storedData.value =   Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
+  authStore.initAuth()
 });
-
-
-const onLogin = (login) => {
-  console.log("login")
-  console.log(login)
-  storedData.value = login;
-};
-
-
 
 </script>
 
 <template>
-
   <Loader v-if="loading"></Loader>
   <div v-if="!loading">
     <Header  class="sticky-header" v-if="storedData==1">
@@ -50,10 +42,8 @@ const onLogin = (login) => {
       <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
     </Header>
     <div class="router-container ">
-      <router-view @login="onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="productStore.filteredItems" :tovar="basket" ></router-view>
+      <router-view @login="authStore.onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="productStore.filteredItems" :tovar="basket" ></router-view>
     </div>
-<!--    <ListProduct @addBasket="addBasket" v-if="!isOrder" :products="filteredItems" ></ListProduct>-->
-<!--    <PageOrder :tovar="basket" v-if="isOrder" @closeOrder = "closeOrder"></PageOrder>-->
   </div>
 </template>
 
