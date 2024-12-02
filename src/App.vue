@@ -13,11 +13,15 @@ import axios from "axios";
 import PageOrder from "./page/PageOrder.vue";
 import {useRouter} from "vue-router";
 
+import { useOrderStore } from "./stores/order.js";
+import {storeToRefs} from "pinia";
+
+
+const orderStore = useOrderStore();  // подключаем стор корзины
+const { basket  } = storeToRefs(orderStore)
+
+
 const products = ref([]);
-const basket  = ref([]);
-const isOrder = ref(false)
-
-
 
 const filteredItems = computed(() => {
   if (!searchTerm.value) return products.value;
@@ -44,13 +48,11 @@ const fetchProducts = async () => {
 };
 
 
-const addBasket = (tovar) => { // принимаем данные о добавлении в корзину
-  basket.value.push(tovar);
-};
 
 
 
-const router =useRouter();
+
+const router = useRouter();
 const openFormOrder = () => {
    router.push("/basket")
 };
@@ -66,9 +68,7 @@ const onSearch = (term) => {
   searchTerm.value = term;
 };
 
-const delBascket = (index) => {
-  basket.value.splice(index.index,index.how)
-};
+
 
 
 const onLogin = (login) => {
@@ -91,7 +91,7 @@ const searchTerm = ref('');
       <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
     </Header>
     <div class="router-container ">
-      <router-view @login="onLogin"  @addBasket="addBasket" @delBascket="delBascket" :products="filteredItems" :tovar="basket" ></router-view>
+      <router-view @login="onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="filteredItems" :tovar="basket" ></router-view>
     </div>
 <!--    <ListProduct @addBasket="addBasket" v-if="!isOrder" :products="filteredItems" ></ListProduct>-->
 <!--    <PageOrder :tovar="basket" v-if="isOrder" @closeOrder = "closeOrder"></PageOrder>-->
