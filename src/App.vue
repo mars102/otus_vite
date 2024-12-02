@@ -5,51 +5,17 @@ import Header from "./components/Header.vue";
 import Loader from "./components/Loader.vue";
 import ShoppingCart from "./components/ShoppingCart.vue";
 import SearchComponent from "./components/SearchComponent.vue";
-const loading = ref(false);
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
-import axios from "axios";
-
-import PageOrder from "./page/PageOrder.vue";
 import {useRouter} from "vue-router";
-
 import { useOrderStore } from "./stores/order.js";
 import {storeToRefs} from "pinia";
-
+import {useProductStore} from "./stores/product.js";
 
 const orderStore = useOrderStore();  // подключаем стор корзины
 const { basket  } = storeToRefs(orderStore)
 
-
-const products = ref([]);
-
-const filteredItems = computed(() => {
-  if (!searchTerm.value) return products.value;
-  return products.value.filter(item =>
-      item.title.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.value.toLowerCase())
-  );
-});
-
-
-const fetchProducts = async () => {
-  try {
-    console.log("ghbdtn vbh")
-    loading.value = true;
-    const response = await axios.get('https://fakestoreapi.com/products');
-    products.value = response.data;
-
-    loading.value = false;
-
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    loading.value = false;
-  }
-};
-
-
-
-
+const productStore = useProductStore(); // подключаем стор со списком продуктов
+const { products, loading, searchTerm } = storeToRefs(productStore); // список продуктов и переменная обозначения закгрузки
 
 
 const router = useRouter();
@@ -60,15 +26,9 @@ const openFormOrder = () => {
 
 const storedData = ref(0)
 onMounted(() => {
-  fetchProducts();
+  productStore.fetchProducts();
   storedData.value =   Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
 });
-
-const onSearch = (term) => {
-  searchTerm.value = term;
-};
-
-
 
 
 const onLogin = (login) => {
@@ -77,7 +37,6 @@ const onLogin = (login) => {
   storedData.value = login;
 };
 
-const searchTerm = ref('');
 
 
 </script>
@@ -87,11 +46,11 @@ const searchTerm = ref('');
   <Loader v-if="loading"></Loader>
   <div v-if="!loading">
     <Header  class="sticky-header" v-if="storedData==1">
-      <SearchComponent  v-model="searchTerm" @search="onSearch"></SearchComponent>
+      <SearchComponent  v-model="searchTerm" @search="productStore.onSearch"></SearchComponent>
       <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
     </Header>
     <div class="router-container ">
-      <router-view @login="onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="filteredItems" :tovar="basket" ></router-view>
+      <router-view @login="onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="productStore.filteredItems" :tovar="basket" ></router-view>
     </div>
 <!--    <ListProduct @addBasket="addBasket" v-if="!isOrder" :products="filteredItems" ></ListProduct>-->
 <!--    <PageOrder :tovar="basket" v-if="isOrder" @closeOrder = "closeOrder"></PageOrder>-->
