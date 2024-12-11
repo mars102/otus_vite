@@ -11,17 +11,27 @@ const router = createRouter({
         {
             path:'/',
             name:'home',
-            component:ListProduct
+            component:ListProduct,
+            meta: { requiresAuth: true },
         },
         {
             path:'/basket',
             name:'basket',
-            component:PageOrder
+            component:PageOrder,
+            meta: { requiresAuth: true },
         },
 
 
-        { path: '/product/:id', name:'product', component: PageProducts },
-        { path: '/login', name:'login', component: Login },
+        { path: '/product/:id',
+            name:'product',
+            component: PageProducts,
+            meta: { requiresAuth: true },
+        },
+        {   path: '/login',
+            name:'login',
+            component: Login,
+
+        },
 
 
 
@@ -30,13 +40,12 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    const data = Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
-
-    if (data==0 && to.name != 'login') {
+    let getAuthValue = Number(localStorage.getItem('isAuth'));
+    let data = (getAuthValue !== 1 && getAuthValue !== 0) ? 0 : getAuthValue;
+    if (to.meta.requiresAuth && data != 1) {
         return next({name: "login"});
     } else {
         return next(true);
     }
-
 })
 export default router

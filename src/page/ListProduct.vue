@@ -7,7 +7,6 @@
 
 <script setup>
 import {ref, onMounted, defineEmits} from 'vue';
-import axios from 'axios';
 import CardProduct from "../components/CardProduct.vue";
 import { defineProps } from 'vue';
 const emit = defineEmits(['addBasket']);
@@ -17,29 +16,9 @@ const props = defineProps({
     required: true
   }
 });
-
-
 const addCard = (tovar) => {
   emit('addBasket', tovar);
-
 };
-
-
-// Создаем реактивную переменную для хранения продуктов
-
-
-// Функция для получения продуктов из API работает не стабильно по этому скачал просто json
-// const fetchProducts = async () => {
-//   try {
-//     const response = await axios.get('https://fakestoreapi.com/products');
-//     products.value = response.data;
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//   }
-// };
-
-
-
 </script>
 
 

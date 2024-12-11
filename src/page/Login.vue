@@ -59,7 +59,6 @@ function validateForm() {
 const router =useRouter();
 
 function submitForm() {
-  console.log("z nenn")
   isSubmitted = true;
   validateForm();
   if (!errors.username && !errors.password) {
@@ -74,9 +73,7 @@ function submitForm() {
 
     }
   } else {
-    console.log("z nenn")
     localStorage.setItem('isAuth', 0);
-
   }
 }
 
