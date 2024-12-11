@@ -9,7 +9,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     function initAuth () {
-        storedData.value =   Number(localStorage.getItem('isAuth'))!=1&&Number(localStorage.getItem('isAuth'))!=0 ? 0:Number(localStorage.getItem('isAuth'));
+        const isAuthValue = Number(localStorage.getItem('isAuth'));
+        storedData.value = (isAuthValue !== 1 && isAuthValue !== 0) ? 0 : isAuthValue;
     }
     return { storedData, onLogin, initAuth }
 })
