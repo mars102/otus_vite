@@ -9,14 +9,18 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import {useRouter} from "vue-router";
 import { useOrderStore } from "./stores/order.js";
 import {storeToRefs} from "pinia";
-import {useProductStore} from "./stores/product.js";
+import {useProductsStore} from "./stores/products.js";
 import {useAuthStore} from "./stores/auth.js";
+import {useLoadStore} from "./stores/load.js"
 
 const orderStore = useOrderStore();  // подключаем стор корзины
 const { basket  } = storeToRefs(orderStore)
 
-const productStore = useProductStore(); // подключаем стор со списком продуктов
-const { loading, searchTerm } = storeToRefs(productStore); // список продуктов и переменная обозначения закгрузки
+const loadStore = useLoadStore(); // подключаем стор загрузки
+const { loading } = storeToRefs(loadStore)
+
+const productsStore = useProductsStore(); // подключаем стор со списком продуктов
+const { searchTerm } = storeToRefs(productsStore); // список продуктов и переменная обозначения закгрузки
 
 const authStore = useAuthStore(); // стор авторизации
 const { storedData } = storeToRefs(authStore); // переменная авторизации/ не авторизован
@@ -28,7 +32,7 @@ const openFormOrder = () => {
 };
 
 onMounted(() => {
-  productStore.fetchProducts();
+  productsStore.fetchProducts();
   authStore.initAuth()
 });
 
@@ -36,13 +40,13 @@ onMounted(() => {
 
 <template>
   <Loader v-if="loading"></Loader>
-  <div v-if="!loading">
+  <div>
     <Header  class="sticky-header" v-if="storedData==1">
-      <SearchComponent  v-model="searchTerm" @search="productStore.onSearch"></SearchComponent>
+      <SearchComponent  v-model="searchTerm" @search="productsStore.onSearch"></SearchComponent>
       <ShoppingCart :tovar="basket" @click="openFormOrder"></ShoppingCart>
     </Header>
     <div class="router-container ">
-      <router-view @login="authStore.onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="productStore.filteredItems" :tovar="basket" ></router-view>
+      <router-view @login="authStore.onLogin"  @addBasket="orderStore.addBasket" @delBascket="orderStore.removeBascket" :products="productsStore.filteredItems" :tovar="basket" ></router-view>
     </div>
   </div>
 </template>

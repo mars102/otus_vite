@@ -2,7 +2,7 @@ import {createRouter, createWebHistory, useRouter} from "vue-router";
 
 import ListProduct from '../page/ListProduct.vue'
 import PageOrder from '../page/PageOrder.vue'
-import PageProducts from '../page/PageProducts.vue'
+import PageProduct from '../page/PageProduct.vue'
 import Login from '../page/Login.vue'
 
 const router = createRouter({
@@ -24,7 +24,7 @@ const router = createRouter({
 
         { path: '/product/:id',
             name:'product',
-            component: PageProducts,
+            component: PageProduct,
             meta: { requiresAuth: true },
         },
         {   path: '/login',

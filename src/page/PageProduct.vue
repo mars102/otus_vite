@@ -45,6 +45,7 @@
   const { product } = storeToRefs(productStore);
   const emit = defineEmits(['addBasket']);
   onMounted(() => {
+    console.log("что происходить")
     productStore.fetchProduct(route.params.id);
 
   });
